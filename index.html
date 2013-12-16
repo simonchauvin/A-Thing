@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>LD#28</title>
+    
+    <!--
+    	The {FM.js(Engine);}
+    -->
+    <!--<script type="text/javascript" src="lib/fm/fmjsengine-min.js"></script>-->
+    <script type="text/javascript" src="lib/fm/fmjsengine-concat.js"></script>
+    
+    <!-- Game files -->
+    <script type="text/javascript" src="src/avatar.js"></script>
+    <script type="text/javascript" src="src/menuState.js"></script>
+    <script type="text/javascript" src="src/playState.js"></script>
+    <script type="text/javascript" src="src/endState.js"></script>
+    <!--
+        Example project's entry point.
+    -->
+    <script>
+        //Include example project's files
+        FM.includeJsFile("src/menuState.js");
+        FM.includeJsFile("src/playState.js");
+
+        //Function called when every file is loaded.
+        var start = function () {
+            "use strict";
+            //Add assets
+            var assetManager = FM.assetManager,
+                param = FM.parameters;
+            //Debug mode
+            param.debug = true;
+
+            //Add sounds
+            assetManager.addAsset("wallSound", param.AUDIO, "assets/sfx/wall.wav");
+            assetManager.addAsset("walk", param.AUDIO, "assets/sfx/walk.wav");
+            assetManager.addAsset("visible", param.AUDIO, "assets/sfx/visible.wav");
+            assetManager.addAsset("ambiance", param.AUDIO, "assets/sfx/ambiance.wav");
+
+            //Add images
+            assetManager.addAsset("avatar", param.IMAGE, "assets/gfx/avatar.png");
+            assetManager.addAsset("eye", param.IMAGE, "assets/gfx/eye.png");
+            assetManager.addAsset("iris", param.IMAGE, "assets/gfx/iris.png");
+            assetManager.addAsset("cursor", param.IMAGE, "assets/gfx/cursor.png");
+            assetManager.addAsset("body", param.IMAGE, "assets/gfx/body.png");
+            assetManager.addAsset("wall", param.IMAGE, "assets/gfx/wall.png");
+            assetManager.addAsset("wallInclined", param.IMAGE, "assets/gfx/wall_inclined.png");
+            
+            assetManager.addAsset("ground", param.IMAGE, "assets/gfx/ground.png");
+
+            //Add files
+            assetManager.addAsset("persistentData", param.FILE, "src/persistentData.json");
+            assetManager.addAsset("world", param.FILE, "world/world.tmx");
+
+            //Load assets
+            assetManager.loadAssets();
+
+            //Specify the folder in which you put  the {FM.js(engine);}
+            param.libraryDirectory = "lib";
+
+            //Start the game
+            FM.game.run("canvas", "ExampleProject", 1024, 768, menuState);
+        };
+
+        //Launch the sart function when every file is loaded
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+
+<body style="background-color: #111;">
+
+<canvas id="canvas" style="display: block;margin: auto;outline: none;cursor: none" tabindex='1'>
+    <p>
+    	This application requires a browser that supports the HTML5 Canvas element.
+    </p>
+</canvas>
+
+</body>
+</html>
