@@ -48,7 +48,7 @@ function playState() {
         var ambiance = FM.gameObject(0),
             ambianceAudio = FM.audioComponent(ambiance);
         ambianceAudio.addSound(FM.assetManager.getAssetByName("ambiance"));
-        ambianceAudio.play("ambiance", 1, true);
+        //ambianceAudio.play("ambiance", 0.2, true);
 
         //Loading tmx file
         var map = FM.tmxMap(), tilemap, irisDist, i, body, wall;
