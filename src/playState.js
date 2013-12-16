@@ -45,6 +45,11 @@ function playState() {
         //Setting the bounds of the world
         Object.getPrototypeOf(that).init(1024, 768);
 
+        //Retrieve IP address and check for its existence
+        var hr = new XMLHttpRequest();
+        hr.open("POST", "src/web/addIp.php", false);
+        hr.send();
+
         var ambiance = FM.gameObject(0),
             ambianceAudio = FM.audioComponent(ambiance);
         ambianceAudio.addSound(FM.assetManager.getAssetByName("ambiance"));

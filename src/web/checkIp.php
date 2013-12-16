@@ -7,10 +7,5 @@
             $knownIp = "true";
         }
     }
-    if ($knownIp == "false") {
-        $newIp = $clientIp;
-        file_put_contents('../ipAddresses.txt', $newIp, FILE_APPEND | LOCK_EX);
-        file_put_contents('../ipAddresses.txt', ',', FILE_APPEND | LOCK_EX);
-    }
     echo $knownIp;
 ?>

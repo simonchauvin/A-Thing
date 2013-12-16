@@ -5,6 +5,7 @@
 function menuState() {
     "use strict";
     var that = Object.create(FM.state()),
+        startButton,
         knownIp = false;
 
     /**
@@ -13,12 +14,10 @@ function menuState() {
     that.init = function () {
         Object.getPrototypeOf(that).init();
 
-        var title = FM.gameObject(99),
-            spatial = FM.spatialComponent(FM.game.getScreenWidth() / 2 - 100, FM.game.getScreenHeight() / 2 - 250, title),
-            renderer = FM.textRendererComponent("A Thing", title);
+        var title = FM.gameObject(99);
+        FM.spatialComponent(FM.game.getScreenWidth() / 2 - 100, FM.game.getScreenHeight() / 2 - 250, title);
+        var renderer = FM.textRendererComponent("A Thing", title);
         renderer.setFormat('#fff', '48px sans-serif', 'middle');
-        title.addComponent(spatial);
-        title.addComponent(renderer);
         that.add(title);
 
         var help = FM.gameObject(99),
@@ -33,12 +32,10 @@ function menuState() {
         renderer.setFormat('#fff', '30px sans-serif', 'middle');
         that.add(help);
 
-        var startButton = FM.gameObject(99),
-        spatial = FM.spatialComponent(FM.game.getScreenWidth() / 2 - 90, FM.game.getScreenHeight() / 2 + 150, startButton);
+        startButton = FM.gameObject(99);
+        FM.spatialComponent(FM.game.getScreenWidth() / 2 - 90, FM.game.getScreenHeight() / 2 + 150, startButton);
         renderer = FM.textRendererComponent("Click to start", startButton);
         renderer.setFormat('#fff', '24px sans-serif', 'middle');
-        startButton.addComponent(spatial);
-        startButton.addComponent(renderer);
         that.add(startButton);
 
         //Retrieve IP address and check for its existence
@@ -71,6 +68,7 @@ function menuState() {
         if (FM.game.isMouseClicked() && !knownIp) {
                 FM.game.switchState(playState());
         } else if (knownIp) {
+            startButton.hide();
             var alert = FM.gameObject(99),
             spatial = FM.spatialComponent(FM.game.getScreenWidth() / 2 - 150, FM.game.getScreenHeight() / 2 + 250, alert),
             renderer = FM.textRendererComponent("You already played.", alert);
