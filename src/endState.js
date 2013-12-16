@@ -16,8 +16,6 @@ function endState() {
             spatial = FM.spatialComponent(FM.game.getScreenWidth() / 2 - 100, FM.game.getScreenHeight() / 2 - 150, title),
             renderer = FM.textRendererComponent("You lost, but you helped the next one.", title);
         renderer.setFormat('#fff', '30px sans-serif', 'middle');
-        title.addComponent(spatial);
-        title.addComponent(renderer);
         that.add(title);
     };
 

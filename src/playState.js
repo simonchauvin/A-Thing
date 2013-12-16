@@ -69,7 +69,9 @@ function playState() {
         //Eye
         eyeSpatial = FM.spatialComponent(474.5, 346.5, eye);
         FM.spriteRendererComponent(FM.assetManager.getAssetByName("eye"), 75, 75, eye);
-        eyePhysic = FM.circleComponent(37.5, eye);
+        eyePhysic = FM.circleComponent(18, eye);
+		eyePhysic.offset.x = 37.5 - 18;
+		eyePhysic.offset.y = 37.5 - 18;
         //Iris
         irisSpatial = FM.spatialComponent(eyeSpatial.position.x + eyePhysic.radius, eyeSpatial.position.y + eyePhysic.radius, iris);
         irisRenderer = FM.spriteRendererComponent(FM.assetManager.getAssetByName("iris"), 30, 30, iris);
@@ -90,6 +92,7 @@ function playState() {
         }
         for (i = 0; i < persistentData.walls.length; i = i + 1) {
             wall = FM.gameObject(15);
+            console.log(persistentData.walls[i]);
             FM.spatialComponent(Math.round(persistentData.walls[i].x), Math.round(persistentData.walls[i].y), wall);
             if (persistentData.walls[i].inclined === "true") {
                 FM.spriteRendererComponent(FM.assetManager.getAssetByName("wallInclined"), 10, 100, wall);
@@ -118,13 +121,13 @@ function playState() {
         Object.getPrototypeOf(that).update(dt);
 
         //Check inputs
-        if (!dead && FM.game.isMouseClicked()) {
+        if (!finalGoalReached && !dead && FM.game.isMouseClicked()) {
             player.audio.play("walk", 1, false);
             move = true;
             player.path.clearPath();
-            player.path.add(FM.game.getMouseX(), FM.game.getMouseY());
+            player.path.add(FM.game.getMouseX() + player.physic.offset.x - player.physic.radius , FM.game.getMouseY() + player.physic.offset.y + player.physic.radius);
             player.path.startFollowingPath(40);
-            cursorDistance = FM.vector((player.spatial.position.x + player.physic.offset.x + player.physic.radius) - FM.game.getMouseX(), (player.spatial.position.y + player.physic.offset.y + player.physic.radius) - FM.game.getMouseY());
+            cursorDistance = FM.vector(player.spatial.position.x - (FM.game.getMouseX() - player.physic.offset.x - player.physic.radius), player.spatial.position.y - (FM.game.getMouseY() - player.physic.offset.y));
             if (cursorDistance.y < 0) {
                 player.spatial.angle = -Math.acos(cursorDistance.x / Math.sqrt(cursorDistance.x * cursorDistance.x + cursorDistance.y * cursorDistance.y)) - Math.PI / 2;
             } else {
@@ -132,7 +135,7 @@ function playState() {
             }
         }
         //Avatar movement
-        if (!dead && move) {
+        if (!finalGoalReached && !dead && move) {
             if (player.renderer.getCurrentAnim() !== "walk") {
                 player.renderer.play("walk");
             }
@@ -141,7 +144,7 @@ function playState() {
                 player.renderer.play("idle");
             }
         }
-        if (!dead && wallsCount < maxWalls && FM.game.isKeyReleased(FM.keyboard.SPACE)) {
+        if (!finalGoalReached && !dead && wallsCount < maxWalls && FM.game.isKeyReleased(FM.keyboard.SPACE)) {
             player.audio.play("wallSound", 1, false);
             var wall = FM.gameObject(15),
                 pos = FM.vector(player.spatial.position.x, player.spatial.position.y),
@@ -155,7 +158,7 @@ function playState() {
                 asset = FM.assetManager.getAssetByName("wallInclined");
                 width = 10;
                 height = 100;
-                pos.x += 20;
+                pos.x += 40;
             } else if (player.spatial.angle < 0.8 && player.spatial.angle >= -0.8) {
                 asset = FM.assetManager.getAssetByName("wall");
                 width = 100;
@@ -184,7 +187,7 @@ function playState() {
         if (!invisible) {
             irisAudio.play("visible", 1, true);
             irisPath.clearPath();
-            irisPath.add(player.spatial.position.x, player.spatial.position.y);
+            irisPath.add(player.spatial.position.x + player.physic.offset.x + player.physic.radius, player.spatial.position.y + player.physic.offset.y + player.physic.radius);
             irisPath.startFollowingPath(300);
             if (player.spatial.position.x - irisPhysic.width < irisSpatial.position.x
                     && irisSpatial.position.x <= eyeSpatial.position.x) {
@@ -215,7 +218,7 @@ function playState() {
         //Reducing avatar's size
         if (!dead && !checkingVisibility) {
             visibilityTestObjectPath.clearPath();
-            visibilityTestObjectPath.add(player.spatial.position.x, player.spatial.position.y);
+			visibilityTestObjectPath.add(player.spatial.position.x + player.physic.offset.x + player.physic.radius, player.spatial.position.y + player.physic.offset.y + player.physic.radius);
             visibilityTestObjectPath.startFollowingPath(300);
             checkingVisibility = true;
         } else if (!dead && visibilityTestObjectPath.isLastWaypointReached()) {
@@ -283,6 +286,9 @@ function playState() {
         if (dead) {
             //irisRenderer.setWidth(irisRenderer.getWidth() * 1.5);
         }
+		if (player.physic.overlapsWithObject(eyePhysic)) {
+			finalGoalReached = true;
+		}
         /*if (wallType.overlapsWithObject(visibilityTestObject)) {
             console.log("COLLISION!!");
             visibilityTestObjectPath.stopFollowingPath();
@@ -291,9 +297,16 @@ function playState() {
             invisible = true;
         }*/
         if (finalGoalReached) {
-            //Clear persistent data
-            //Clear ips
-            //Reset the machine
+			irisSpatial.position.reset(eyeSpatial.position.x + eyePhysic.offset.x + eyePhysic.radius - irisRenderer.getWidth() / 2, eyeSpatial.position.y + eyePhysic.offset.y + eyePhysic.radius - irisRenderer.getHeight() / 2);
+			irisRenderer.setWidth(irisRenderer.getWidth() * 0.99);
+			irisRenderer.setHeight(irisRenderer.getHeight() * 0.99);
+			invisible = true;
+			
+			var hr = new XMLHttpRequest();
+            hr.open("POST", "src/web/reset.php", true);
+            hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            hr.send(dataToSend);
+			FM.game.switchState(menuState());
         }
         //Map cursor and modify player's angle
         cursorSpatial.position.x = FM.game.getMouseX();
