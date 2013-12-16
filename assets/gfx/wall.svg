@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="24.792346"
+     inkscape:cx="14.792346"
      inkscape:cy="-3.741429"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -39,8 +39,8 @@
      fit-margin-bottom="0"
      inkscape:window-width="1920"
      inkscape:window-height="1028"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="-32000"
+     inkscape:window-y="-32000"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true" />
@@ -66,8 +66,9 @@
        id="rect9146"
        width="99.372574"
        height="9.3725729"
-       x="185.58897"
-       y="260.25778"
-       ry="0.019330466" />
+       x="-314.63034"
+       y="230.58897"
+       ry="0.019330466"
+       transform="matrix(0,-1,1,0,0,0)" />
   </g>
 </svg>
