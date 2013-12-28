@@ -23,15 +23,15 @@ function avatar(pType) {
     that.renderer.play("idle");
 
     //that.renderer.changeSize(0.5);
-    that.physic.offset.reset(15, 0);
+    that.physic.offset.reset(13, 0);
     //that.physic.width = 36;
     //that.physic.height = 17.5;
     //that.physic.radius = 20;
     /**
-    * Update the avatar
-    */
+     * Update the avatar
+     */
     that.update = function (dt) {
-        
+
     };
 
     return that;
