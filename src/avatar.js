@@ -1,18 +1,19 @@
+/*globals FM */
 /**
  * Avatar
  * @returns {avatar}
  */
 function avatar(pType) {
     "use strict";
-    var that = FM.gameObject(10);
-    that.spatial = FM.spatialComponent(465, 20, that);
-    that.renderer = FM.animatedSpriteRendererComponent(FM.assetManager.getAssetByName("avatar"), 72, 35, that);
-    that.physic = FM.circleComponent(20, that);
-    that.path = FM.simplePathComponent(that);
-    that.audio = FM.audioComponent(that);
+    var that = new FM.GameObject(10);
+    that.spatial = that.addComponent(new FM.SpatialComponent(465, 20, that));
+    that.renderer = that.addComponent(new FM.AnimatedSpriteRendererComponent(FM.AssetManager.getAssetByName("avatar"), 72, 35, that));
+    that.physic = that.addComponent(new FM.CircleComponent(20, that));
+    that.path = that.addComponent(new FM.SimplePathComponent(that));
+    that.audio = that.addComponent(new FM.AudioComponent(that));
 
-    that.audio.addSound(FM.assetManager.getAssetByName("wallSound"));
-    that.audio.addSound(FM.assetManager.getAssetByName("walk"));
+    that.audio.addSound(FM.AssetManager.getAssetByName("wallSound"));
+    that.audio.addSound(FM.AssetManager.getAssetByName("walk"));
 
     that.spatial.angle = 0;
 

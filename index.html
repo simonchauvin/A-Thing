@@ -2,33 +2,28 @@
 
 <html>
 <head>
-    <title>LD#28</title>
+    <title>A Thing</title>
     
     <!--
     	The {FM.js(Engine);}
     -->
-    <!--<script type="text/javascript" src="lib/fm/fmjsengine-min.js"></script>-->
-    <script type="text/javascript" src="lib/fm/fmjsengine-concat.js"></script>
-    
-    <!-- Game files -->
-    <script type="text/javascript" src="src/avatar.js"></script>
-    <script type="text/javascript" src="src/menuState.js"></script>
-    <script type="text/javascript" src="src/playState.js"></script>
-    <script type="text/javascript" src="src/endState.js"></script>
+    <script type="text/javascript" src="lib/fm/fmjsengine-min.js"></script>
     <!--
-        Example project's entry point.
+        A Thing's entry point.
     -->
     <script>
-        //Include example project's files
+        //Include A Thing's files
         FM.includeJsFile("src/menuState.js");
+        FM.includeJsFile("src/avatar.js");
         FM.includeJsFile("src/playState.js");
+        FM.includeJsFile("src/endState.js");
 
         //Function called when every file is loaded.
         var start = function () {
             "use strict";
             //Add assets
-            var assetManager = FM.assetManager,
-                param = FM.parameters;
+            var assetManager = FM.AssetManager,
+                param = FM.Parameters;
             //Debug mode
             //param.debug = true;
 
@@ -61,11 +56,8 @@
             //Load assets
             assetManager.loadAssets();
 
-            //Specify the folder in which you put  the {FM.js(engine);}
-            param.libraryDirectory = "lib";
-
             //Start the game
-            FM.game.run("canvas", "ExampleProject", 1024, 768, menuState);
+            FM.Game.run("canvas", "A Thing", 1024, 768, new menuState());
         };
 
         //Launch the sart function when every file is loaded
