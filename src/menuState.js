@@ -41,17 +41,17 @@ menuState.prototype.init = function () {
     this.add(this.startButton);
 
     //Retrieve IP address and check for its existence
-    /*var hr = new XMLHttpRequest();
+    var hr = new XMLHttpRequest();
     hr.open("POST", "src/web/checkIp.php", false);
     hr.onreadystatechange = function () {
         if (hr.readyState === 4 && hr.status === 200) {
             var gg = hr.responseText;
             if (gg === "true") {
-                knownIp = true;
+                this.knownIp = true;
             }
         }
     };
-    hr.send();*/
+    hr.send();
 
     //Check if the IP is known
     if (this.knownIp) {

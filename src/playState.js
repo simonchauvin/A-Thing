@@ -50,9 +50,9 @@ playState.prototype.init = function () {
     FM.State.prototype.init.apply(this, [1024, 768]);
 
     //Retrieve IP address and check for its existence
-    /*var hr = new XMLHttpRequest();
+    var hr = new XMLHttpRequest();
     hr.open("POST", "src/web/addIp.php", false);
-    hr.send();*/
+    hr.send();
 
     var ambiance = new FM.GameObject(0),
         ambianceAudio = ambiance.addComponent(new FM.AudioComponent(ambiance));
